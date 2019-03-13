@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import WeatherApi from "./components/WeatherApi";
 import SearchWeather from "./components/SearchWeather";
 
 class App extends Component {
@@ -8,6 +7,8 @@ class App extends Component {
     search: "",
     metrics: "metric",
     makeSearch: false,
+    long: null,
+    lat: null
   };
 
   handleInputChange = e => {
@@ -24,52 +25,74 @@ class App extends Component {
     });
   };
 
-
   handleSubmit = event => {
     event.preventDefault();
     this.setState({
       ...this.state,
       makeSearch: true
-    })
-    
+    });
   };
 
-  render() {
+  getCurrentPosition = () => {
+
+    debugger;
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(successCallback,errorCallback,{timeout:10000});
+    }
+      let successCallback = (position) => {
+        console.log(position)
+      }
+      let errorCallback = (error) => {
+        console.log(error)
+      }
+
+
+      // navigator.geolocation.getCurrentPosition(function(position) {
+    //     var pos = {
+    //       lat: position.coords.latitude,
+    //       lng: position.coords.longitude
+    //     };
+    //     console.log(pos)
+     
+    // }
   
-    let displayWeather = this.state.currentWeather;
+    // navigator.geolocation.getCurrentPosition(position => 
+    //   this.setState({
+    //     long: position.coords.latitude, 
+    //     lat: position.coords.longitude
+    //   })
+    // );
+  
+    let currentPos = this.state.lat+this.state.long;
+  
+    // currentPos = currentPos.toFixed(4);
+  
+    const locationUrl = `http://www.mapquestapi.com/geocoding/v1/reverse?key=ezG2yDEhc5K56zG4kB9vLVMWFi8pwgrt&location=${currentPos}`;
+  
+    fetch(locationUrl)
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        console.log(response);
+        // let locationCoords = response.results[0].locations[0].latLng;
+        // locationCoords = `${locationCoords.lat},${locationCoords.lng}`;
+      })
+      .catch(error => {
+        console.log(error, "something went wrong");
+      });
+  }
+
+
+
+  render() {
     let searched;
 
-    
-      if(this.state.makeSearch){
-        searched = <SearchWeather search={this.state}/>;
-        // this.setState{(
-        //   ...this.state,
-        //   makeSearch: false
-        // )}
-        debugger;
-      }
-    
-
-    if (displayWeather) {
-      
-    //   function convertUnixUp() {
-    //     sunrise = new Date(displayWeather.sys.sunrise * 1000);
-    //     let hours = sunrise.getHours();
-    //     let minutes = "0" + sunrise.getMinutes();
-    //     sunrise = hours + ':' + minutes.substr(-2)
-    //     return sunrise;
-    // }
-    // convertUnixUp();
-    //   function convertUnixDown() {
-    //     sunset = new Date(displayWeather.sys.sunset * 1000);
-    //     let hours = sunset.getHours();
-    //     let minutes = "0" + sunset.getMinutes();
-    //     sunset = hours + ':' + minutes.substr(-2)
-    //     return sunset;
-    // }
-    // convertUnixDown();
-      
+    if (this.state.makeSearch) {
+      searched = <SearchWeather search={this.state} />;
     }
+
     return (
       <div className="App">
         <h1>WeatherYouLikeItOrNot</h1>
@@ -80,6 +103,7 @@ class App extends Component {
             placeholder="Search.."
           />
           <button onClick={this.handleSubmit}>Search</button>
+          <button onClick={this.getCurrentPosition}>Get Your Weather</button>
         </form>
         <input
           type="radio"
