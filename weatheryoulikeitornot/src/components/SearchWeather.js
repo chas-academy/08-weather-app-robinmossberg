@@ -8,13 +8,11 @@ export class SearchWeather extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.search.search || !this.props.search.metrics) return;
-
+    let ApiKey = process.env.REACT_APP_API_KEY;
     let fetches = [weatherUrl(this.props), forecastUrl(this.props)];
 
     Promise.all(fetches)
-
-      .then(data => {
+    .then(data => {
         return data.map(data => {
           return data.json();
         });
@@ -30,25 +28,50 @@ export class SearchWeather extends Component {
       .catch(error => {
         console.log(error, "something went wrong");
       });
+      
+      function weatherUrl(props) {
+      console.log(props)
+      if(props.search.lat && props.search.long){
+        return fetch(
+          `http://api.openweathermap.org/data/2.5/weather?lat=${
+            props.search.lat
+          }&lon=${props.search.long}&units=${
+            props.search.metrics
+          }&APPID=${ApiKey}`
+        );
+      } else {
 
-    function weatherUrl(props) {
-      return fetch(
-        `http://api.openweathermap.org/data/2.5/weather?q=${
-          props.search.search
-        }&units=${props.search.metrics}&APPID=dcfd76e3d19d7279f127a7758065f52b`
-      );
+        return fetch(
+          `http://api.openweathermap.org/data/2.5/weather?q=${
+            props.search.search
+          }&units=${props.search.metrics}&APPID=${ApiKey}`
+        );
+      }
     }
     function forecastUrl(props) {
-      return fetch(
-        `http://api.openweathermap.org/data/2.5/forecast?q=${
-          props.search.search
-        }&units=${props.search.metrics}&APPID=dcfd76e3d19d7279f127a7758065f52b`
-      );
+
+      if(props.search.lat && props.search.long){
+        return fetch(
+          `http://api.openweathermap.org/data/2.5/forecast?lat=${
+            props.search.lat
+          }&lon=${props.search.long}&units=${
+            props.search.metrics
+          }&APPID=${ApiKey}`
+        );
+
+      } else{
+        return fetch(
+          `http://api.openweathermap.org/data/2.5/forecast?q=${
+            props.search.search
+          }&units=${props.search.metrics}&APPID=${ApiKey}`
+        );
+
+      }
+
     }
   }
 
   render() {
-    console.log(this.state);
     let weather = this.state.weather;
     let dayLight = [];
 
