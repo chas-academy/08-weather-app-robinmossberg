@@ -1,21 +1,30 @@
 import React, { Component } from "react";
 import "./App.css";
 import SearchWeather from "./components/SearchWeather";
+import Forecast from "./components/Forecast";
+
 
 class App extends Component {
   state = {
     search: "",
     metrics: "metric",
     makeSearch: false,
+    lat: null,
     long: null,
-    lat: null
+    weather: null
   };
 
-  handleInputChange = e => {
-    this.setState({
-      ...this.state,
-      search: e.target.value
-    });
+  handleChange = (e) => {
+    if(this.state.makeSearch){
+      this.setState({
+        [e.target.name]: e.target.value,
+        makeSearch: false
+      })
+    } else {
+      this.setState({
+        [e.target.name]: e.target.value
+      })
+    }
   };
 
   handleRadioChange = e => {
@@ -28,69 +37,86 @@ class App extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.setState({
-      ...this.state,
-      makeSearch: true
+      makeSearch: !this.state.makeSearch
     });
   };
 
+  newFunc = position => {
+    this.setState(
+      {
+        lat: position.coords.latitude,
+        long: position.coords.longitude
+      },
+      () => {
+        this.fetchWeatherData();
+      }
+    );
+  };
+
+  componentDidMount = () => {
+    this.getCurrentPosition();
+  };
+
   getCurrentPosition = () => {
-
-    debugger;
-    
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(successCallback,errorCallback,{timeout:10000});
+      navigator.geolocation.getCurrentPosition(this.newFunc);
     }
-      let successCallback = (position) => {
-        console.log(position)
-      }
-      let errorCallback = (error) => {
-        console.log(error)
-      }
+  };
 
+  generateApiUrlOnLocation = () => {
+    return `http://api.openweathermap.org/data/2.5/weather?lat=${
+      this.state.lat
+    }&lon=${this.state.long}&units=${
+      this.state.metrics
+    }&APPID=dcfd76e3d19d7279f127a7758065f52b`;
+  };
 
-      // navigator.geolocation.getCurrentPosition(function(position) {
-    //     var pos = {
-    //       lat: position.coords.latitude,
-    //       lng: position.coords.longitude
-    //     };
-    //     console.log(pos)
-     
-    // }
-  
-    // navigator.geolocation.getCurrentPosition(position => 
-    //   this.setState({
-    //     long: position.coords.latitude, 
-    //     lat: position.coords.longitude
-    //   })
-    // );
-  
-    let currentPos = this.state.lat+this.state.long;
-  
-    // currentPos = currentPos.toFixed(4);
-  
-    const locationUrl = `http://www.mapquestapi.com/geocoding/v1/reverse?key=ezG2yDEhc5K56zG4kB9vLVMWFi8pwgrt&location=${currentPos}`;
-  
-    fetch(locationUrl)
-      .then(response => {
-        return response.json();
+  fetchWeatherData = async () => {
+    const locationUrl = this.generateApiUrlOnLocation();
+
+    const data = await fetch(locationUrl)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`Oh shit, it broke`);
+        }
+        return res.json();
       })
       .then(response => {
-        console.log(response);
-        // let locationCoords = response.results[0].locations[0].latLng;
-        // locationCoords = `${locationCoords.lat},${locationCoords.lng}`;
+        return response;
       })
       .catch(error => {
-        console.log(error, "something went wrong");
+        console.error(error);
       });
-  }
 
-
+    this.setState({
+      weather: data
+    });
+  };
 
   render() {
-    let searched;
+    const { weather, makeSearch } = this.state;
+    let render;
 
-    if (this.state.makeSearch) {
-      searched = <SearchWeather search={this.state} />;
+    if (makeSearch) {
+      render = <SearchWeather search={this.state} />;
+     
+    } else {
+      render = (
+        <div>
+        {weather ? (
+          <div>
+            <ul>
+              <li>{weather ? weather.name : ""}</li>
+              <li>Temp {weather ? weather.main.temp : ""} Degrees</li>
+              <li>Humidity {weather ? weather.main.humidity : ""}%</li>
+              <li>Windyness {weather ? weather.wind.speed : ""}</li>
+            </ul>
+          </div>
+        ) : (
+          <h3>Loading…</h3>
+        )}
+        </div>
+      )
     }
 
     return (
@@ -98,9 +124,11 @@ class App extends Component {
         <h1>WeatherYouLikeItOrNot</h1>
         <form action="" onSubmit={this.handleSubmit}>
           <input
-            onChange={this.handleInputChange}
+            onChange={this.handleChange}
             type="text"
+            name="search"
             placeholder="Search.."
+            value={this.state.search}
           />
           <button onClick={this.handleSubmit}>Search</button>
           <button onClick={this.getCurrentPosition}>Get Your Weather</button>
@@ -121,7 +149,7 @@ class App extends Component {
           value="imperial"
         />
         Farenheit
-        {searched}
+        {render}
       </div>
     );
   }

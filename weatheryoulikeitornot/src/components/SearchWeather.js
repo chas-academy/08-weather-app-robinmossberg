@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Forecast from './Forecast';
 
 export class SearchWeather extends Component {
   constructor(props) {
@@ -81,6 +82,7 @@ export class SearchWeather extends Component {
               <li>Windyness {weather ? weather.wind.speed : ""}</li>
               <li>Sunrise {weather ? dayLight[0] : ""} Sunset {weather ? dayLight[1] : ""}</li>
             </ul>
+            <Forecast forecast={this.state}/>
           </div>
         );
 
