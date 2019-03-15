@@ -9,8 +9,7 @@ class App extends Component {
     metrics: "metric",
     makeSearch: false,
     lat: null,
-    long: null,
-    weather: null
+    long: null
   };
 
   handleChange = (e) => {
@@ -28,15 +27,17 @@ class App extends Component {
 
   handleRadioChange = e => {
     this.setState({
-      ...this.state,
       metrics: e.target.value
     });
   };
 
   handleSubmit = event => {
     event.preventDefault();
+    debugger;
     this.setState({
-      makeSearch: !this.state.makeSearch
+      makeSearch: true,
+      lat: null,
+      long: null
     });
   };
 
@@ -60,10 +61,12 @@ class App extends Component {
   render() {
     const { makeSearch, lat, long } = this.state;
     let render;
+    console.log('App Render')
+
 
     if (makeSearch) {
-      render = <SearchWeather search={this.state} />;
-     
+      debugger;
+      render = <SearchWeather search={this.state}/>;     
     } else if (lat && long) {
       render = <SearchWeather search={this.state} />;
     } else {

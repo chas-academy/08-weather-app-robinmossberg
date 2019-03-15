@@ -41,6 +41,7 @@ export class Forecast extends Component {
     const { todaysForecast, weekForecast } = this.state;
     let threeHoureWeather;
     let weekForecastRend;
+    
 
 
     if(!this.state.todaysForecast){
@@ -70,8 +71,7 @@ export class Forecast extends Component {
       })
     }
 
-    console.log(this.state)
-    // debugger;
+    console.log('forecast render')
 
 
       return (

@@ -4,43 +4,51 @@ import Forecast from './Forecast';
 export class SearchWeather extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      initialState: null
+    };
+  }
+  
+  componentDidMount() {
+    this.apiCalls()
   }
 
-  componentDidMount() {
-    let ApiKey = process.env.REACT_APP_API_KEY;
-    let fetches = [weatherUrl(this.props), forecastUrl(this.props)];
-
-    Promise.all(fetches)
-    .then(data => {
-        return data.map(data => {
-          return data.json();
-        });
-      })
+  
+    apiCalls = () =>{
+      console.log('SearchWeather apiCalls')
+      let ApiKey = process.env.REACT_APP_API_KEY;
+      let fetches = [weatherUrl(this.props), forecastUrl(this.props)];
+  
+      Promise.all(fetches)
       .then(data => {
-        Promise.all(data).then(data => {
-          this.setState({
-            weather: data[0],
-            forcast: data[1]
+          return data.map(data => {
+            return data.json();
           });
+        })
+        .then(data => {
+          Promise.all(data).then(data => {
+            this.setState({
+              weather: data[0],
+              forcast: data[1]
+            });
+          });
+        })
+        .catch(error => {
+          console.log(error, "something went wrong");
         });
-      })
-      .catch(error => {
-        console.log(error, "something went wrong");
-      });
-      
-      function weatherUrl(props) {
-      console.log(props)
-      if(props.search.lat && props.search.long){
-        return fetch(
-          `http://api.openweathermap.org/data/2.5/weather?lat=${
-            props.search.lat
-          }&lon=${props.search.long}&units=${
-            props.search.metrics
-          }&APPID=${ApiKey}`
-        );
+        
+        function weatherUrl(props) {
+        console.log(props)
+        if(!props.search.makeSearch){
+          return fetch(
+            `http://api.openweathermap.org/data/2.5/weather?lat=${
+              props.search.lat
+            }&lon=${props.search.long}&units=${
+              props.search.metrics
+            }&APPID=${ApiKey}`
+          );
+           
       } else {
-
         return fetch(
           `http://api.openweathermap.org/data/2.5/weather?q=${
             props.search.search
@@ -50,7 +58,7 @@ export class SearchWeather extends Component {
     }
     function forecastUrl(props) {
 
-      if(props.search.lat && props.search.long){
+      if(!props.search.makeSearch){
         return fetch(
           `http://api.openweathermap.org/data/2.5/forecast?lat=${
             props.search.lat
@@ -58,22 +66,25 @@ export class SearchWeather extends Component {
             props.search.metrics
           }&APPID=${ApiKey}`
         );
-
       } else{
         return fetch(
           `http://api.openweathermap.org/data/2.5/forecast?q=${
             props.search.search
           }&units=${props.search.metrics}&APPID=${ApiKey}`
         );
-
       }
-
     }
   }
+   
+     
+     
+  
+  
 
   render() {
     let weather = this.state.weather;
     let dayLight = [];
+    console.log('SearchWeather render')
 
     if(weather){
         let sunriseSunset = [weather.sys.sunrise, weather.sys.sunset];
@@ -90,7 +101,6 @@ export class SearchWeather extends Component {
         
 
     }
-
     if(!weather){
         return (
             <div>Loading Data..</div>
@@ -99,11 +109,11 @@ export class SearchWeather extends Component {
         return (
           <div>
             <ul>
-              <li>{weather ? weather.name : ""}</li>
-              <li>Temp {weather ? weather.main.temp : ""} Degrees</li>
-              <li>Humidity {weather ? weather.main.humidity : ""}%</li>
-              <li>Windyness {weather ? weather.wind.speed : ""}</li>
-              <li>Sunrise {weather ? dayLight[0] : ""} Sunset {weather ? dayLight[1] : ""}</li>
+              <li>{weather.name}</li>
+              <li>Temp { weather.main.temp} Degrees</li>
+              <li>Humidity {weather.main.humidity}%</li>
+              <li>Windyness { weather.wind.speed}</li>
+              <li>Sunrise {dayLight[0]} Sunset {dayLight[1]}</li>
             </ul>
             <Forecast forecast={this.state}/>
           </div>
