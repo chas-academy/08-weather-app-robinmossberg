@@ -11,10 +11,14 @@ export class Forecast extends Component {
   }
   
   componentDidMount() {
+    this.forecastData();
+  }
 
 
+  forecastData = () =>{
     let todaysForecastArr= [];
     let weekForecastArr = []
+    
     for(let i = 1; i< 8; i++){
       todaysForecastArr.push(this.forecast[i])
     }
@@ -23,7 +27,7 @@ export class Forecast extends Component {
     })
 
 
-    this.forecast.map((index, time) => {
+    this.forecast.map((index) => {
       let substring = "12:00:00";
       let i = index.dt_txt;
       if (i.includes(substring)) {
@@ -36,6 +40,7 @@ export class Forecast extends Component {
     })
 
   }
+  
 
   render() {
     const { todaysForecast, weekForecast } = this.state;
@@ -44,7 +49,7 @@ export class Forecast extends Component {
     
 
 
-    if(!this.state.todaysForecast){
+    if(!todaysForecast){
       threeHoureWeather = <div>Loading..</div>
     } else {
       threeHoureWeather = todaysForecast.map((data, i) =>{
@@ -57,7 +62,8 @@ export class Forecast extends Component {
         )
       })
     }
-    if(!this.state.weekForecast){
+
+    if(!weekForecast){
       weekForecastRend = <div>Loading..</div>
     } else {
       weekForecastRend = weekForecast.map((data, i) =>{
@@ -70,9 +76,6 @@ export class Forecast extends Component {
         )
       })
     }
-
-    console.log('forecast render')
-
 
       return (
         <div>

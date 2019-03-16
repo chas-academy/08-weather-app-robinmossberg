@@ -33,11 +33,8 @@ class App extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    debugger;
     this.setState({
       makeSearch: true,
-      lat: null,
-      long: null
     });
   };
 
@@ -61,14 +58,13 @@ class App extends Component {
   render() {
     const { makeSearch, lat, long } = this.state;
     let render;
-    console.log('App Render')
 
 
     if (makeSearch) {
-      debugger;
-      render = <SearchWeather search={this.state}/>;     
+      render = <SearchWeather ref="child" search={this.state}/>;     
+      this.refs.child.apiCalls();
     } else if (lat && long) {
-      render = <SearchWeather search={this.state} />;
+      render = <SearchWeather ref="child" search={this.state} />;
     } else {
       render = <div>Loading..</div>
     }
@@ -85,7 +81,6 @@ class App extends Component {
             value={this.state.search}
           />
           <button onClick={this.handleSubmit}>Search</button>
-          <button onClick={this.getCurrentPosition}>Get Your Weather</button>
         </form>
         <input
           type="radio"
