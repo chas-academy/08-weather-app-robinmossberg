@@ -30,7 +30,7 @@ export class SearchWeather extends Component {
         Promise.all(data).then(data => {
           this.setState({
             weather: data[0],
-            forcast: data[1]
+            forecast: data[1]
           });
         });
       })
@@ -77,7 +77,7 @@ export class SearchWeather extends Component {
   render() {
     const { weather } = this.state;
     let dayLight = [];
-    let forecast;
+
     console.log("SearchWeather render");
 
     
@@ -95,10 +95,7 @@ export class SearchWeather extends Component {
       convertUnix(sunriseSunset);
     }
     
-    if(weather){
-      forecast = <Forecast ref="forecastFunc" forecast={this.state} />
-      this.refs.forecastFunc.forecastData();
-    }
+    
     
 
 
@@ -117,7 +114,7 @@ export class SearchWeather extends Component {
               Sunrise {dayLight[0]} Sunset {dayLight[1]}
             </li>
           </ul>
-          { forecast }
+          <Forecast forecast={this.state} />
         </div>
       );
     }
