@@ -97,7 +97,7 @@ export class SearchWeather extends Component {
     if (!weather) {
       return (
         <div className="preloader-wrapper big active">
-          <div className="spinner-layer spinner-blue-only">
+          <div className="spinner-layer spinner-teal-only">
             <div className="circle-clipper left">
               <div className="circle" />
             </div>

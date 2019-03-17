@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 import SearchWeather from "./components/SearchWeather";
-import WeatherIcon from "react-icons-weather";
 
 class App extends Component {
   state = {
@@ -67,7 +66,7 @@ class App extends Component {
     } else {
       render = (
         <div className="preloader-wrapper big active">
-          <div className="spinner-layer spinner-blue-only">
+          <div className="spinner-layer spinner-teal-only">
             <div className="circle-clipper left">
               <div className="circle" />
             </div>

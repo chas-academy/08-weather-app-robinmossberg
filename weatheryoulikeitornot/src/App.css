@@ -71,3 +71,14 @@
 #radio {
   margin: 20px;
 }
+
+
+
+@media screen and (max-width: 600px){
+  h1{
+    font-size: 40px;
+  }
+  .owm{
+    font-size: 30px;
+  }
+}
