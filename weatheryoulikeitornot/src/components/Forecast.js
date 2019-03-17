@@ -1,11 +1,12 @@
 import React from "react";
-import WeatherIcon from 'react-icons-weather';
+import WeatherIcon from "react-icons-weather";
 
 const Forecast = props => {
   let forecast = props.forecast.forecast.list;
   let threeHourWeather;
   let weekForecastRend;
 
+  let formatedTime= [];
   let todaysForecastArr = [];
   let weekForecastArr = [];
 
@@ -17,6 +18,8 @@ const Forecast = props => {
     let substring = "12:00:00";
     let i = index.dt_txt;
     if (i.includes(substring)) {
+      let time = i.slice(1,17)
+      formatedTime.push(time)
       weekForecastArr.push(index);
     }
   });
@@ -25,42 +28,20 @@ const Forecast = props => {
     threeHourWeather = <div>Loading..</div>;
   } else {
     threeHourWeather = todaysForecastArr.map((data, i) => {
-      console.log(data)
       return (
-        <div className="card" key={i}>
-        <div>
-            <WeatherIcon
-              className="owm"
-              name="owm"
-              iconId={data.weather[0].id}
-              flip="horizontal"
-              rotate="90"
-            />
-          </div>
-          <li>{data.dt_txt}</li>
-          <li>{data.main.temp}</li>
-          <li>{data.weather[0].description}</li>
-        </div>
-      );
-    });
-  }
-
-  if (!weekForecastArr) {
-    weekForecastRend = <div>Loading..</div>;
-  } else {
-    weekForecastRend = weekForecastArr.map((data, i) => {
-      return (
-        <div className="card col m3" key={i}>
-          <div className="">
-          <WeatherIcon
-              className="owm"
-              name="owm"
-              iconId={data.weather[0].id}
-              flip="horizontal"
-              rotate="90"
-            />
+        <div className="card col s4 m3 l3 offset-l2" key={i}>
+          <div className="card-panel">
+            <div>
+              <WeatherIcon
+                className="owm"
+                name="owm"
+                iconId={data.weather[0].id}
+                flip="horizontal"
+                rotate="90"
+              />
+            </div>
             <li>{data.dt_txt}</li>
-            <li>{data.main.temp}</li>
+            <li>{data.main.temp}°</li>
             <li>{data.weather[0].description}</li>
           </div>
         </div>
@@ -68,14 +49,43 @@ const Forecast = props => {
     });
   }
 
-  return (
-    <div className="">
-      <div className="row">
-        <div >
-          <ul className="card">{threeHourWeather}</ul>
-        </div>
+  if (!weekForecastArr) {
+    weekForecastRend = (
+      <div className="progress">
+        <div className="indeterminate" />
       </div>
-      <div className="row">
+    );
+  } else {
+    weekForecastRend = weekForecastArr.map((data, i) => {
+      return (
+        <div className="card col s2 m3 l3 offset-l2" key={i}>
+          <div className="card-panel">
+            <div className="">
+              <WeatherIcon
+                className="owm"
+                name="owm"
+                iconId={data.weather[0].id}
+                flip="horizontal"
+                rotate="90"
+              />
+              <li>{data.dt_txt}</li>
+              <li>{data.main.temp}°</li>
+              <li>{data.weather[0].description}</li>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  }
+
+  return (
+    <div className="container">
+          <h4>24h Weather</h4>
+      <div className="row valign-wrapper">
+          <ul className="">{threeHourWeather}</ul>
+      </div>
+        <h4>5 Day Weather</h4>
+      <div className="row valign-wrapper">
         <ul>{weekForecastRend}</ul>
       </div>
     </div>

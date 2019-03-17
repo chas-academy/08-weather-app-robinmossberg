@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import SearchWeather from "./components/SearchWeather";
-import WeatherIcon from 'react-icons-weather';
-
+import WeatherIcon from "react-icons-weather";
 
 class App extends Component {
   state = {
@@ -66,7 +65,21 @@ class App extends Component {
     } else if (lat && long) {
       render = <SearchWeather ref="child" search={this.state} />;
     } else {
-      render = <div>Loading..</div>;
+      render = (
+        <div className="preloader-wrapper big active">
+          <div className="spinner-layer spinner-blue-only">
+            <div className="circle-clipper left">
+              <div className="circle" />
+            </div>
+            <div className="gap-patch">
+              <div className="circle" />
+            </div>
+            <div className="circle-clipper right">
+              <div className="circle" />
+            </div>
+          </div>
+        </div>
+      );
     }
 
     return (
@@ -84,7 +97,7 @@ class App extends Component {
                 value={this.state.search}
               />
             </div>
-            <button onClick={this.handleSubmit}>Search</button>
+            <button className="waves-effect waves-light btn"onClick={this.handleSubmit}>Search</button>
           </form>
           <form>
             <label>
@@ -92,7 +105,7 @@ class App extends Component {
                 type="radio"
                 onChange={this.handleRadioChange}
                 name="metric"
-                id=""
+                id="radio"
                 value="metric"
               />
               <span>Celsius</span>
@@ -102,7 +115,7 @@ class App extends Component {
                 type="radio"
                 onChange={this.handleRadioChange}
                 name="metric"
-                id=""
+                id="radio"
                 value="imperial"
               />
               <span>Farenheit</span>

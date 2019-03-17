@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Forecast from "./Forecast";
-import WeatherIcon from 'react-icons-weather';
+import WeatherIcon from "react-icons-weather";
 
 export class SearchWeather extends Component {
   constructor(props) {
@@ -95,22 +95,36 @@ export class SearchWeather extends Component {
     }
 
     if (!weather) {
-      return <div>Loading Current Weather..</div>;
+      return (
+        <div className="preloader-wrapper big active">
+          <div className="spinner-layer spinner-blue-only">
+            <div className="circle-clipper left">
+              <div className="circle" />
+            </div>
+            <div className="gap-patch">
+              <div className="circle" />
+            </div>
+            <div className="circle-clipper right">
+              <div className="circle" />
+            </div>
+          </div>
+        </div>
+      );
     } else {
       return (
-        <div className="container">
-          <div className="card">
-            <div className="col s12 m4 l4 offset-l1 offset-m1">
+        <div className="">
+          <div className="">
+            <div className="">
               <ul className="">
-              <WeatherIcon
-              className="owm"
-              name="owm"
-              iconId={weather.weather[0].id}
-              flip="horizontal"
-              rotate="90"
-            />
+                <WeatherIcon
+                  className="owm"
+                  name="owm"
+                  iconId={weather.weather[0].id}
+                  flip="horizontal"
+                  rotate="90"
+                />
                 <li>{weather.name}</li>
-                <li>Temp {weather.main.temp} Degrees</li>
+                <li>Temp {weather.main.temp}°</li>
                 <li>Humidity {weather.main.humidity}%</li>
                 <li>Windyness {weather.wind.speed}</li>
                 <li>
@@ -119,7 +133,7 @@ export class SearchWeather extends Component {
               </ul>
             </div>
           </div>
-          <div className="container">
+          <div className="">
             <Forecast forecast={this.state} />
           </div>
         </div>
