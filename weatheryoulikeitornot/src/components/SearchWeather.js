@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Forecast from "./Forecast";
+import WeatherIcon from 'react-icons-weather';
 
 export class SearchWeather extends Component {
   constructor(props) {
@@ -11,7 +12,6 @@ export class SearchWeather extends Component {
     this.apiCalls();
   }
 
-
   apiCalls = () => {
     console.log("SearchWeather apiCalls");
     let ApiKey = process.env.REACT_APP_API_KEY;
@@ -20,8 +20,8 @@ export class SearchWeather extends Component {
     Promise.all(fetches)
       .then(data => {
         return data.map(data => {
-          if(data.status !== 200){
-            throw new Error('Something went wrong')
+          if (data.status !== 200) {
+            throw new Error("Something went wrong");
           }
           return data.json();
         });
@@ -78,9 +78,8 @@ export class SearchWeather extends Component {
     const { weather } = this.state;
     let dayLight = [];
 
-    console.log("SearchWeather render");
+    console.log(this.state);
 
-    
     if (weather) {
       let sunriseSunset = [weather.sys.sunrise, weather.sys.sunset];
       const convertUnix = sunriseSunset => {
@@ -94,27 +93,35 @@ export class SearchWeather extends Component {
       };
       convertUnix(sunriseSunset);
     }
-    
-    
-    
-
-
 
     if (!weather) {
       return <div>Loading Current Weather..</div>;
     } else {
       return (
-        <div>
-          <ul>
-            <li>{weather.name}</li>
-            <li>Temp {weather.main.temp} Degrees</li>
-            <li>Humidity {weather.main.humidity}%</li>
-            <li>Windyness {weather.wind.speed}</li>
-            <li>
-              Sunrise {dayLight[0]} Sunset {dayLight[1]}
-            </li>
-          </ul>
-          <Forecast forecast={this.state} />
+        <div className="container">
+          <div className="card">
+            <div className="col s12 m4 l4 offset-l1 offset-m1">
+              <ul className="">
+              <WeatherIcon
+              className="owm"
+              name="owm"
+              iconId={weather.weather[0].id}
+              flip="horizontal"
+              rotate="90"
+            />
+                <li>{weather.name}</li>
+                <li>Temp {weather.main.temp} Degrees</li>
+                <li>Humidity {weather.main.humidity}%</li>
+                <li>Windyness {weather.wind.speed}</li>
+                <li>
+                  Sunrise {dayLight[0]} Sunset {dayLight[1]}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="container">
+            <Forecast forecast={this.state} />
+          </div>
         </div>
       );
     }

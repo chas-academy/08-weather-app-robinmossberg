@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
+import WeatherIcon from 'react-icons-weather';
 
 const Forecast = props => {
   let forecast = props.forecast.forecast.list;
-  let threeHoureWeather;
+  let threeHourWeather;
   let weekForecastRend;
 
   let todaysForecastArr = [];
@@ -12,7 +13,7 @@ const Forecast = props => {
     todaysForecastArr.push(forecast[i]);
   }
 
-  todaysForecastArr.map(index => {
+  forecast.map(index => {
     let substring = "12:00:00";
     let i = index.dt_txt;
     if (i.includes(substring)) {
@@ -21,11 +22,21 @@ const Forecast = props => {
   });
 
   if (!todaysForecastArr) {
-    threeHoureWeather = <div>Loading..</div>;
+    threeHourWeather = <div>Loading..</div>;
   } else {
-    threeHoureWeather = todaysForecastArr.map((data, i) => {
+    threeHourWeather = todaysForecastArr.map((data, i) => {
+      console.log(data)
       return (
-        <div key={i}>
+        <div className="card" key={i}>
+        <div>
+            <WeatherIcon
+              className="owm"
+              name="owm"
+              iconId={data.weather[0].id}
+              flip="horizontal"
+              rotate="90"
+            />
+          </div>
           <li>{data.dt_txt}</li>
           <li>{data.main.temp}</li>
           <li>{data.weather[0].description}</li>
@@ -39,33 +50,36 @@ const Forecast = props => {
   } else {
     weekForecastRend = weekForecastArr.map((data, i) => {
       return (
-        <div key={i}>
-          <li>{data.dt_txt}</li>
-          <li>{data.main.temp}</li>
-          <li>{data.weather[0].description}</li>
+        <div className="card col m3" key={i}>
+          <div className="">
+          <WeatherIcon
+              className="owm"
+              name="owm"
+              iconId={data.weather[0].id}
+              flip="horizontal"
+              rotate="90"
+            />
+            <li>{data.dt_txt}</li>
+            <li>{data.main.temp}</li>
+            <li>{data.weather[0].description}</li>
+          </div>
         </div>
       );
     });
   }
 
   return (
-    <div>
-      <ul>{threeHoureWeather}</ul>
-      <ul>{weekForecastRend}</ul>
+    <div className="">
+      <div className="row">
+        <div >
+          <ul className="card">{threeHourWeather}</ul>
+        </div>
+      </div>
+      <div className="row">
+        <ul>{weekForecastRend}</ul>
+      </div>
     </div>
   );
 };
 
 export default Forecast;
-
-//   render() {
-//     const { todaysForecast, weekForecast } = this.state;
-
-//
-
-//
-
-//       r
-//     }
-
-// }
