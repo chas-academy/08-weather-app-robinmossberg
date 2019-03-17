@@ -45,6 +45,29 @@
   padding: 20px;
 }
 
+.bigContainer{
+  
+  /* flex-wrap: wrap; */
+  /* justify-content: center; */
+}
+.threeHourForecast{
+  display: flex;
+  flex-direction: row;
+  align-content: start;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  /* width: 25%; */
+  /* height: 100%; */
+}
+
+.weekForecast{
+  display: flex;
+  flex-direction: row;
+  align-content: start;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 #radio {
   margin: 20px;
 }

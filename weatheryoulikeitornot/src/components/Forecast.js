@@ -29,7 +29,7 @@ const Forecast = props => {
   } else {
     threeHourWeather = todaysForecastArr.map((data, i) => {
       return (
-        <div className="card col s4 m3 l3 offset-l2" key={i}>
+        <div className="card" key={i}>
           <div className="card-panel">
             <div>
               <WeatherIcon
@@ -58,7 +58,7 @@ const Forecast = props => {
   } else {
     weekForecastRend = weekForecastArr.map((data, i) => {
       return (
-        <div className="card col s2 m3 l3 offset-l2" key={i}>
+        <div className="card" key={i}>
           <div className="card-panel">
             <div className="">
               <WeatherIcon
@@ -79,14 +79,14 @@ const Forecast = props => {
   }
 
   return (
-    <div className="container">
+    <div className="bigContainer">
           <h4>24h Weather</h4>
-      <div className="row valign-wrapper">
-          <ul className="">{threeHourWeather}</ul>
+      <div className="" id="">
+          <ul className="threeHourForecast">{threeHourWeather}</ul>
       </div>
         <h4>5 Day Weather</h4>
-      <div className="row valign-wrapper">
-        <ul>{weekForecastRend}</ul>
+      <div className="">
+        <ul className="weekForecast">{weekForecastRend}</ul>
       </div>
     </div>
   );
