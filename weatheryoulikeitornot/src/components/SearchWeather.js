@@ -41,7 +41,7 @@ export class SearchWeather extends Component {
     function weatherUrl(props) {
       if (!props.search.makeSearch && !props.search.search) {
         return fetch(
-          `http://api.openweathermap.org/data/2.5/weather?lat=${
+          `https://api.openweathermap.org/data/2.5/weather?lat=${
             props.search.lat
           }&lon=${props.search.long}&units=${
             props.search.metrics
@@ -49,7 +49,7 @@ export class SearchWeather extends Component {
         );
       } else {
         return fetch(
-          `http://api.openweathermap.org/data/2.5/weather?q=${
+          `https://api.openweathermap.org/data/2.5/weather?q=${
             props.search.search
           }&units=${props.search.metrics}&APPID=${ApiKey}`
         );
@@ -58,7 +58,7 @@ export class SearchWeather extends Component {
     function forecastUrl(props) {
       if (!props.search.makeSearch && !props.search.search) {
         return fetch(
-          `http://api.openweathermap.org/data/2.5/forecast?lat=${
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${
             props.search.lat
           }&lon=${props.search.long}&units=${
             props.search.metrics
@@ -66,7 +66,7 @@ export class SearchWeather extends Component {
         );
       } else {
         return fetch(
-          `http://api.openweathermap.org/data/2.5/forecast?q=${
+          `https://api.openweathermap.org/data/2.5/forecast?q=${
             props.search.search
           }&units=${props.search.metrics}&APPID=${ApiKey}`
         );
