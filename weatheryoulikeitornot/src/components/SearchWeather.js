@@ -13,7 +13,6 @@ export class SearchWeather extends Component {
   }
 
   apiCalls = () => {
-    console.log("SearchWeather apiCalls");
     let ApiKey = process.env.REACT_APP_API_KEY;
     let fetches = [weatherUrl(this.props), forecastUrl(this.props)];
 
@@ -78,8 +77,6 @@ export class SearchWeather extends Component {
     const { weather } = this.state;
     let dayLight = [];
 
-    console.log(this.state);
-
     if (weather) {
       let sunriseSunset = [weather.sys.sunrise, weather.sys.sunset];
       const convertUnix = sunriseSunset => {
@@ -126,7 +123,7 @@ export class SearchWeather extends Component {
                 <li>{weather.name}</li>
                 <li>Temp {weather.main.temp}°</li>
                 <li>Humidity {weather.main.humidity}%</li>
-                <li>Windyness {weather.wind.speed}</li>
+                <li>Windyness {weather.wind.speed}{}</li>
                 <li>
                   Sunrise {dayLight[0]} Sunset {dayLight[1]}
                 </li>
