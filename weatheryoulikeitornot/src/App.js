@@ -53,8 +53,8 @@ class App extends Component {
       navigator.geolocation.getCurrentPosition(this.setCoords);
     } else {
       this.setState({
-        lat: '59.334591', 
-        long: '18.063240'
+        search: 'Stockholm',
+        makeSearch: true
       })
     }
   };
