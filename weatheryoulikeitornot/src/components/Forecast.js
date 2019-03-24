@@ -18,7 +18,7 @@ const Forecast = props => {
     let substring = "12:00:00";
     let i = index.dt_txt;
     if (i.includes(substring)) {
-      let time = i.slice(1,17)
+      let time = i.slice(5,16)
       formatedTime.push(time)
       weekForecastArr.push(index);
     }
